@@ -14,7 +14,7 @@ import optimal_route
 import pickle
 
 import logging
-logging.setLevel(logging.DEBUG)
+logging.getLogger().setLevel(logging.DEBUG)
 
 import multiprocessing
 
