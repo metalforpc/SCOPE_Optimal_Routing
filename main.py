@@ -14,7 +14,7 @@ import optimal_route
 import pickle
 
 import logging
-logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger().setLevel(logging.INFO)
 
 import multiprocessing
 
@@ -27,7 +27,7 @@ if __name__ == "__main__":
     NUTS = IO.load_nuts()
 
     # Get Nodes and Edges
-    nodes, edges = data_manipulation.get_nodes_edges_from_graph()
+    nodes, edges = data_manipulation.get_nodes_edges_from_graph(G, NUTS)
 
     # Get list of countries
     country_list = NUTS.CNTR_CODE.unique()
