@@ -45,6 +45,7 @@ if __name__ == "__main__":
     # Define a function to run in parallel the optimal routings
     def parallel_route(destination_country):
         paths = optimal_route.compute_optimal_route(G, NUTS, nodes, origin_node, destination_country)
+        return paths
 
     # Instantiate an array to save the results
     #output = data_manipulation.create_output_dataframe(country_list.shape[0])
