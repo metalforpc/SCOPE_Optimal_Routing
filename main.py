@@ -57,7 +57,7 @@ if __name__ == "__main__":
     results = [pool.apply_async(parallel_route, (country,)) for country in country_list]
 
     logging.info("Final Results")
-    final_results = [result.get() for result in results]
+    final_results = [result.get(timeout=1) for result in results]
 
     # Close the pool to free up resources
     pool.close()
