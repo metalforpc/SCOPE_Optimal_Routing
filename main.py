@@ -11,6 +11,7 @@ import networkx as nx
 import IO
 import data_manipulation
 import optimal_route
+import pickle
 
 import logging
 logging.setLevel(logging.DEBUG)
@@ -18,6 +19,7 @@ logging.setLevel(logging.DEBUG)
 import multiprocessing
 
 if __name__ == "__main__":
+
     # Load Network from pickle file
     G = IO.load_network()
 
@@ -42,11 +44,22 @@ if __name__ == "__main__":
     def parallel_route(destination_country):
         paths = optimal_route.compute_optimal_route(G, NUTS, nodes, origin_node, destination_country)
 
-    # Allocate cores
-    with multiprocessing.Pool(len(country_list)) as pool:
-        logging.info("Starting optimal routing")
-        res = pool.map(parallel_route, country_list)
-        pool.close()
-        pool.join()
+    # Instantiate an array to save the results
+    #output = data_manipulation.create_output_dataframe(country_list.shape[0])
+
+    # Multicores optimal routing
+    pool = multiprocessing.Pool(processes=country_list.shape[0])
+    results = [pool.apply_async(parallel_route, (country,)) for country in country_list]
+    final_results = [result.get() for result in results]
+
+    # Close the pool to free up resources
+    pool.close()
+    pool.join()
+
+    logging.info("Saving results to Pickle File")
+    # Instantiate elements in the output array
+    with open("res.pickle","wb") as f:
+        pickle.dump(final_results, f, protocol=pickle.HIGHEST_PROTOCOL)
+
 
     logging.warning("End of the script...")
