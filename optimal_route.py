@@ -2,7 +2,7 @@ import osmnx as ox
 
 def compute_optimal_route(G, NUTS, nodes, origin_node, country, k_paths = 5):
 
-    dest_idx = nodes.geometry.sindex.nearest(NUTS[NUTS.NAME_LATN == country].centroids)
+    dest_idx = nodes.geometry.sindex.nearest(NUTS[NUTS.CNTR_CODE == country].centroids)[1][0]
     print(dest_idx)
     dest_node = nodes.iloc[dest_idx].name
     
