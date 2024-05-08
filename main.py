@@ -30,6 +30,7 @@ if __name__ == "__main__":
     nodes, edges = data_manipulation.get_nodes_edges_from_graph(G, NUTS)
 
     # Get list of countries
+    logging.info("Getting Country List")
     country_list = NUTS.CNTR_CODE.unique()
     country_list = country_list[~(country_list == 'IT')]
 
@@ -37,6 +38,7 @@ if __name__ == "__main__":
     # Among all nodes, find the nearest to a given centroid
 
     # Instantiate origin node ("IT")
+    logging.info("Getting Italy Node")
     origin_idx = nodes.geometry.sindex.nearest(NUTS[NUTS.CNTR_CODE == "IT"].centroids)[1][0]
     origin_node = nodes.iloc[origin_idx].name
 
@@ -48,8 +50,13 @@ if __name__ == "__main__":
     #output = data_manipulation.create_output_dataframe(country_list.shape[0])
 
     # Multicores optimal routing
+    logging.info("Creating the pool")
     pool = multiprocessing.Pool(processes=country_list.shape[0])
+
+    logging.info("Starting the Pool of processes")
     results = [pool.apply_async(parallel_route, (country,)) for country in country_list]
+
+    logging.info("Final Results")
     final_results = [result.get() for result in results]
 
     # Close the pool to free up resources
