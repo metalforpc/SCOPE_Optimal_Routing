@@ -33,7 +33,6 @@ if __name__ == "__main__":
     logging.info("Getting Country List")
     country_list = NUTS.CNTR_CODE.unique()
     country_list = country_list[~(country_list == 'IT')]
-    country_list = country_list[:4]
 
     # For each pair ("IT", country) compute the optimal route
     # Among all nodes, find the nearest to a given centroid
