@@ -52,12 +52,7 @@ if __name__ == "__main__":
     # Multicores optimal routing
     logging.info("Creating the pool")
     pool = multiprocessing.Pool(processes=country_list.shape[0])
-
-    logging.info("Starting the Pool of processes")
-    results = [pool.apply_async(parallel_route, (country,)) for country in country_list]
-
-    logging.info("Final Results")
-    final_results = [result.get(timeout=1) for result in results]
+    results = pool.map(parallel_route, iterable=country_list)
 
     # Close the pool to free up resources
     pool.close()
@@ -66,7 +61,7 @@ if __name__ == "__main__":
     logging.info("Saving results to Pickle File")
     # Instantiate elements in the output array
     with open("res.pickle","wb") as f:
-        pickle.dump(final_results, f, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 
     logging.warning("End of the script...")
