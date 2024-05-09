@@ -1,6 +1,9 @@
 import logging
 import osmnx as ox
+import numpy as np
 import pandas as pd
+import itertools
+
 
 def get_nodes_edges_from_graph(G, NUTS):
     """
@@ -19,6 +22,28 @@ def get_nodes_edges_from_graph(G, NUTS):
     logging.info("Geometries built correctly")
 
     return nodes, edges
+
+def od_nodes(origins, destinations, NUTS, nodes):
+    logging.info("Computing nearest origin node in the graph")
+
+    origin_nodes = np.zeros(len(origins), dtype=int)
+
+    for idx, origin in enumerate(origins):
+        centroid = NUTS.loc[(NUTS.NUTS_ID == origin), 'centroids']
+        origin_idx = nodes.geometry.sindex.nearest(centroid)[1][0]
+        origin_nodes[idx] = int(nodes.iloc[origin_idx].name)
+
+    destination_nodes = np.zeros(len(destinations), dtype=int)
+    for idx, dest in enumerate(destinations):
+        centroid = NUTS.loc[(NUTS.NUTS_ID == dest), 'centroids']
+        dest_idx = nodes.geometry.sindex.nearest(centroid)[1][0]
+        destination_nodes[idx] = int(nodes.iloc[dest_idx].name)
+
+    od_set = list(itertools.product(origin_nodes, destination_nodes))
+    
+    return origin_nodes, destination_nodes, od_set
+
+
 
 def create_output_dataframe(nrows, paths=5):
     """

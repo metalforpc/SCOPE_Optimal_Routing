@@ -1,4 +1,4 @@
-""" This Scripts Compute the optimal routing for the whole europe"""
+""" This Scripts Compute the optimal routing for the whole europe."""
 
 import numpy as np
 
@@ -24,23 +24,13 @@ if __name__ == "__main__":
     G = IO.load_network()
 
     # Load NUTS shapefile
-    NUTS = IO.load_nuts()
+    NUTS, origins_nuts, destinations_nuts = IO.load_nuts()
 
     # Get Nodes and Edges
     nodes, edges = data_manipulation.get_nodes_edges_from_graph(G, NUTS)
 
-    # Get list of countries
-    logging.info("Getting Country List")
-    country_list = NUTS.CNTR_CODE.unique()
-    country_list = country_list[~(country_list == 'IT')]
-
-    # For each pair ("IT", country) compute the optimal route
-    # Among all nodes, find the nearest to a given centroid
-
-    # Instantiate origin node ("IT")
-    logging.info("Getting Italy Node")
-    origin_idx = nodes.geometry.sindex.nearest(NUTS[NUTS.CNTR_CODE == "IT"].centroids)[1][0]
-    origin_node = nodes.iloc[origin_idx].name
+    # Get OD nodes
+    origin_nodes, destination_nodes, od_set = data_manipulation.od_nodes(origins_nuts, destinations_nuts, NUTS, nodes)
 
     # Define a function to run in parallel the optimal routings
     def parallel_route(destination_country):
