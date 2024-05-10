@@ -1,5 +1,5 @@
-from . import IO
-from . import data_manipulation
+from .. import IO
+from .. import data_manipulation
 import matplotlib.pyplot as plt
 
 # Load network and convert geometry
