@@ -27,12 +27,12 @@ def od_nodes(origins, destinations, NUTS, nodes):
     logging.info("Computing nearest origin node in the graph")
 
     origin_nodes = np.zeros(len(origins), dtype=int)
-
     for idx, origin in enumerate(origins):
         centroid = NUTS.loc[(NUTS.NUTS_ID == origin), 'centroids']
         origin_idx = nodes.geometry.sindex.nearest(centroid)[1][0]
         origin_nodes[idx] = int(nodes.iloc[origin_idx].name)
 
+    logging.info("Computing nearest destination node in the graph")
     destination_nodes = np.zeros(len(destinations), dtype=int)
     for idx, dest in enumerate(destinations):
         centroid = NUTS.loc[(NUTS.NUTS_ID == dest), 'centroids']
@@ -40,14 +40,13 @@ def od_nodes(origins, destinations, NUTS, nodes):
         destination_nodes[idx] = int(nodes.iloc[dest_idx].name)
 
     od_set = list(itertools.product(origin_nodes, destination_nodes))
+    logging.info("OD created")
     
     return origin_nodes, destination_nodes, od_set
 
-
-
 def create_output_dataframe(nrows, paths=5):
     """
-    Create an empty dataframe properly formatted for the output
+    TODO Create an empty dataframe properly formatted for the output
     """
 
     # Base Columns and dtypes
@@ -63,4 +62,27 @@ def create_output_dataframe(nrows, paths=5):
     df = df.astype(types)
 
     return df
+
+def create_output_dataframe_2(nrows):
+    logging.info("Creating output dataset")
+    columns = ["FROM","TO","PATH"]
+    types = {"FROM":str, "TO":str, "PATH":object}
+    df = pd.DataFrame(columns=columns, index=range(0, nrows))
+    df = df.astype(types)
+    logging.info("Done")
+
+    return df
+
+def unpack_results_to_df(results, df):
+    """
+    Unpack the results into the dataframe
+    """
+    logging.info("Unpacking results into the dataframe")
+    for i in range(0, len(results)):
+        route = results[i]
+        df.loc[i, "FROM"] = route[0]
+        df.loc[i, "TO"] = route[1]
+        df.loc[i, "PATH"] = route[2]
+
+    logging.info("Done")
 

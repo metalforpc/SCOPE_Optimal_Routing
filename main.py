@@ -33,26 +33,30 @@ if __name__ == "__main__":
     origin_nodes, destination_nodes, od_set = data_manipulation.od_nodes(origins_nuts, destinations_nuts, NUTS, nodes)
 
     # Define a function to run in parallel the optimal routings
-    def parallel_route(destination_country):
-        paths = optimal_route.compute_optimal_route(G, NUTS, nodes, origin_node, destination_country)
+    def parallel_route(OD):
+        paths = optimal_route.compute_single_dijkstra(G, OD)
         return paths
 
     # Instantiate an array to save the results
-    #output = data_manipulation.create_output_dataframe(country_list.shape[0])
+    output_df = data_manipulation.create_output_dataframe_2(len(od_set))
 
     # Multicores optimal routing
     logging.info("Creating the pool")
-    pool = multiprocessing.Pool(processes=country_list.shape[0])
-    results = pool.map(parallel_route, iterable=country_list)
+    pool = multiprocessing.Pool(processes=len(od_set))
+    results = pool.map(parallel_route, iterable=od_set)
 
     # Close the pool to free up resources
     pool.close()
     pool.join()
 
-    logging.info("Saving results to Pickle File")
+    # Unpack results
+
     # Instantiate elements in the output array
     with open("res.pickle","wb") as f:
         pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
+    
+    data_manipulation.unpack_results_to_df(results, output_df)
+    output_df.to_csv("NUTS0.csv", index=False)
 
 
     logging.warning("End of the script...")

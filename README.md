@@ -30,3 +30,11 @@ Once the graph and NUTS are loaded, the program extracts nodes and edges of the 
 - Phase 4: **Computing OD set**
 
 Now that we have the nodes, edges, origins, and destinations in NUTS_ID, we have to transform the origins and destinations from NUTS_ID to actual nodes on the graph. To do so, we take the centroid of each NUTS and search for the nearest node in the graph. The od_nodes function takes care of this operation and once finished, returns a set of origin, destination nodes, and the Cartesian product of the two.
+
+- Phase 5: **Optimal Routing**
+
+Given all the information needed, the program computes the optimal routing from all origin to all destinations
+
+- Phase 6: **Saving Results**
+
+Saves the result and returns the dataframe
