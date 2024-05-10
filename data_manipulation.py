@@ -65,24 +65,30 @@ def create_output_dataframe(nrows, paths=5):
 
 def create_output_dataframe_2(nrows):
     logging.info("Creating output dataset")
-    columns = ["FROM","TO","PATH"]
-    types = {"FROM":str, "TO":str, "PATH":object}
+
+    columns = ["OR", "DEST", "OR_NODE", "DEST_NODE", "PATH"]
+
+    types = {"OR":str, "DEST":str, "OR_NODE":int, "DEST_NODE":int, "PATH":object}
     df = pd.DataFrame(columns=columns, index=range(0, nrows))
     df = df.astype(types)
     logging.info("Done")
 
     return df
 
-def unpack_results_to_df(results, df):
+def unpack_results_to_df(results, df, od_names):
     """
     Unpack the results into the dataframe
     """
     logging.info("Unpacking results into the dataframe")
     for i in range(0, len(results)):
         route = results[i]
-        df.loc[i, "FROM"] = route[0]
-        df.loc[i, "TO"] = route[1]
-        df.loc[i, "PATH"] = route[2]
+        names = od_names[i]
+        df.at[i, "OR"] = names[0]
+        df.at[i, "DEST"] = names[1]
+        
+        df.at[i, "OR_NODE"] = route[0]
+        df.at[i, "DEST_NODE"] = route[1]
+        df.at[i, "PATH"] = route[2]
 
     logging.info("Done")
 

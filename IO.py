@@ -42,6 +42,8 @@ def load_nuts(CODE_LEVEL = 0):
     origins_nuts = NUTS.loc[(NUTS.CNTR_CODE == 'IT'), 'NUTS_ID'].unique()
     destinations_nuts = NUTS.loc[~(NUTS.CNTR_CODE == 'IT'), 'NUTS_ID'].unique()
 
+    OD_names = list(itertools.product(origins_nuts, destinations_nuts))
+
     logging.info("Done")
 
-    return NUTS, origins_nuts, destinations_nuts
+    return NUTS, origins_nuts, destinations_nuts, OD_names

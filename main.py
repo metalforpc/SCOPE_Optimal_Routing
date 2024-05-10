@@ -24,7 +24,7 @@ if __name__ == "__main__":
     G = IO.load_network()
 
     # Load NUTS shapefile
-    NUTS, origins_nuts, destinations_nuts = IO.load_nuts()
+    NUTS, origins_nuts, destinations_nuts, OD_names = IO.load_nuts()
 
     # Get Nodes and Edges
     nodes, edges = data_manipulation.get_nodes_edges_from_graph(G, NUTS)
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     with open("res.pickle","wb") as f:
         pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
     
-    data_manipulation.unpack_results_to_df(results, output_df)
+    data_manipulation.unpack_results_to_df(results, output_df, OD_names)
     output_df.to_csv("NUTS0.csv", index=False)
 
 
