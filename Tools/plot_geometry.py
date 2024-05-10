@@ -2,6 +2,9 @@ import IO
 import data_manipulation
 import matplotlib.pyplot as plt
 
+import logging
+logging.getLogger().setLevel(logging.INFO)
+
 # Load network and convert geometry
 G = IO.load_network()
 NUTS, origins_nuts, destinations_nuts, OD_names = IO.load_nuts()
