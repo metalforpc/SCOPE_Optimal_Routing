@@ -51,11 +51,17 @@ if __name__ == "__main__":
     # Instantiate an array to save the results
     output_df = data_manipulation.create_output_dataframe_2(len(od_set))
 
-    input(f"The optimal route for {len(od_set)} will be computed, press ENTER to begin")
+    # Setting up number of cores
+    if len(od_set) < 128:
+        CORES = len(od_set)
+    else:
+        CORES = 128
 
+    logging.info(f"The optimal route for {len(od_set)} will be computed...")
+    
     # Multicores optimal routing
     logging.info("Creating the pool")
-    pool = multiprocessing.Pool(processes=len(od_set))
+    pool = multiprocessing.Pool(processes=CORES)
     results = pool.map(parallel_route, iterable=od_set)
 
     # Close the pool to free up resources
