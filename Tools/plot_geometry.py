@@ -27,6 +27,8 @@ edges.plot(ax = ax, color='black', alpha=0.2)
 logging.info("Plotting EU geometries")
 NUTS.plot(ax = ax)
 NUTS.centroids.plot(ax = ax, color='red')
+ax.set_xlim([0.25*1e7, 0.75*1e7])
+ax.set_ylim([1*1e6, 6.8*1e6])
 plt.axis('off')
 
 logging.info("Saving file to output")
