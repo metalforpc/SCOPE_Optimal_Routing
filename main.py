@@ -27,8 +27,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     NUTS_CODE = args.NUTS
-    os.system('clear')
-    print(f"""Scripts executed with the following arguments:
+
+    logging.info(f"""Scripts executed with the following arguments:
           NUTS_CODE: {NUTS_CODE}""")
 
     # Load Network from pickle file
