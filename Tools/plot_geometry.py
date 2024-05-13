@@ -1,8 +1,10 @@
 import sys
+import os
 from pathlib import Path
 path = Path(__file__).parent.parent
+print(path)
 
-sys.path.append(path)
+sys.path.append(os.path.abspath(path))
 
 from Routines import IO
 from Routines import data_manipulation
