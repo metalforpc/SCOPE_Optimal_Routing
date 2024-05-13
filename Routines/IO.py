@@ -24,12 +24,24 @@ def load_network():
 
     return G
 
+def load_results(file):
+    """
+    Load computation from optimal route
+    """
+    logging.info("Loading previous computation")
+    with open(f"{get_home()}/Outputs/{file}.pickle", "rb") as f:
+        G = pickle.load(f)
+
+    return G
+
 def load_nuts(CODE_LEVEL = 0):
     """
     Load NUTS shapefile, default level is 0
     """
 
     assert isinstance(CODE_LEVEL, int)
+
+    # Shapefile paths
     not_cleaned = "Administrative_Boundaries/NUTS_RG_20M_2021_3035.shp"
     cleaned = "AB_Cleaned/AB_clean.shp"
 
@@ -49,8 +61,14 @@ def load_nuts(CODE_LEVEL = 0):
 
     # Retrieve origins NUTS_ID
     logging.info("Retrieving origin and destination nuts")
+
+    # NUTS ID
     origins_nuts = NUTS.loc[(NUTS.CNTR_CODE == 'IT'), 'NUTS_ID'].unique()
     destinations_nuts = NUTS.loc[~(NUTS.CNTR_CODE == 'IT'), 'NUTS_ID'].unique()
+
+    # LATIN NAME
+    origins_nuts_ltn = NUTS.loc[(NUTS.CNTR_CODE == 'IT'), 'NAME_LATN'].unique()
+    destinations_nuts_ltn = NUTS.loc[~(NUTS.CNTR_CODE == 'IT'), 'NAME_LATN'].unique()
 
     OD_names = list(itertools.product(origins_nuts, destinations_nuts))
 

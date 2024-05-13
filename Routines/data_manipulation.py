@@ -66,10 +66,10 @@ def create_output_dataframe(nrows, paths=5):
 def create_output_dataframe_2(nrows):
     logging.info("Creating output dataset")
 
-    columns = ["OR", "DEST", "OR_NODE", "DEST_NODE", "PATH"]
-    
+    columns = ["OR_CODE", "DEST_CODE", "OR_NODE", "DEST_NODE", "OR_LTN", "DEST_LTN", "PATH"]
+
     # TODO FIX DATATYPES
-    types = {"OR":str, "DEST":str, "OR_NODE":str, "DEST_NODE":str, "PATH":object}
+    types = {"OR_CODE":str, "DEST_CODE":str, "OR_NODE":str, "DEST_NODE":str, "OR_LTN":str, "DEST_LTN":str, "PATH":object}
     df = pd.DataFrame(columns=columns, index=range(0, nrows))
     df = df.astype(types)
     logging.info("Done")

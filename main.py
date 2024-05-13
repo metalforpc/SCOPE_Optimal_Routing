@@ -57,7 +57,7 @@ if __name__ == "__main__":
     else:
         CORES = 128
 
-    logging.info(f"The optimal route for {len(od_set)} will be computed...")
+    logging.info(f"The optimal route for {len(od_set)} ODs will be computed using {CORES} cores")
     
     # Multicores optimal routing
     logging.info("Creating the pool")
@@ -68,12 +68,13 @@ if __name__ == "__main__":
     pool.close()
     pool.join()
 
-    # Unpack results
+    ## Unpack results
 
     # Instantiate elements in the output array
     with open(f"Outputs/NUTS_{NUTS_CODE}.pickle","wb") as f:
         pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
     
+    # Unpack results to a CSV
     data_manipulation.unpack_results_to_df(results, output_df, OD_names)
     output_df.to_csv(f"Outputs/NUTS_{NUTS_CODE}.csv", index=False)
 
