@@ -22,7 +22,7 @@ if __name__ == "__main__":
     G = IO.load_network()
 
     # Load NUTS shapefile
-    NUTS, origins_nuts, destinations_nuts, OD_names = IO.load_nuts()
+    NUTS, origins_nuts, destinations_nuts, OD_names = IO.load_nuts(CODE_LEVEL=1)
 
     # Get Nodes and Edges
     nodes, edges = data_manipulation.get_nodes_edges_from_graph(G, NUTS)
@@ -37,6 +37,8 @@ if __name__ == "__main__":
 
     # Instantiate an array to save the results
     output_df = data_manipulation.create_output_dataframe_2(len(od_set))
+
+    input(f"The optimal route for {len(od_set)} will be computed, press ENTER to begin")
 
     # Multicores optimal routing
     logging.info("Creating the pool")

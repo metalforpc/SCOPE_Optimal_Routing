@@ -1,15 +1,16 @@
 import sys
 import os
 from pathlib import Path
-path = Path(__file__).parent.parent
-print(path)
 
+# Absolute path for import "Routines Modules"
+path = Path(__file__).parent.parent
 sys.path.append(os.path.abspath(path))
 
 from Routines import IO
 from Routines import data_manipulation
 import matplotlib.pyplot as plt
 
+# Logger
 import logging
 logging.getLogger().setLevel(logging.INFO)
 
