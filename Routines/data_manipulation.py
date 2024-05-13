@@ -67,8 +67,9 @@ def create_output_dataframe_2(nrows):
     logging.info("Creating output dataset")
 
     columns = ["OR", "DEST", "OR_NODE", "DEST_NODE", "PATH"]
-
-    types = {"OR":str, "DEST":str, "OR_NODE":int, "DEST_NODE":int, "PATH":object}
+    
+    # TODO FIX DATATYPES
+    types = {"OR":str, "DEST":str, "OR_NODE":str, "DEST_NODE":str, "PATH":object}
     df = pd.DataFrame(columns=columns, index=range(0, nrows))
     df = df.astype(types)
     logging.info("Done")
