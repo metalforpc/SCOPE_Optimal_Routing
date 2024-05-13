@@ -14,15 +14,28 @@ import pickle
 import logging
 logging.getLogger().setLevel(logging.INFO)
 
+import argparse
+import os
+
 import multiprocessing
 
 if __name__ == "__main__":
+
+    # Parser to use arguments when calling the script
+    parser = argparse.ArgumentParser(description="Compute Optimal Routings")
+    parser.add_argument("--NUTS", required=True, type=int)
+    args = parser.parse_args()
+
+    NUTS_CODE = args.NUTS
+    os.system('clear')
+    print(f"""Scripts executed with the following arguments:
+          NUTS_CODE: {NUTS_CODE}""")
 
     # Load Network from pickle file
     G = IO.load_network()
 
     # Load NUTS shapefile
-    NUTS, origins_nuts, destinations_nuts, OD_names = IO.load_nuts(CODE_LEVEL=1)
+    NUTS, origins_nuts, destinations_nuts, OD_names = IO.load_nuts(CODE_LEVEL=NUTS_CODE)
 
     # Get Nodes and Edges
     nodes, edges = data_manipulation.get_nodes_edges_from_graph(G, NUTS)
@@ -52,11 +65,11 @@ if __name__ == "__main__":
     # Unpack results
 
     # Instantiate elements in the output array
-    with open("res.pickle","wb") as f:
+    with open(f"Outputs/NUTS_{NUTS_CODE}.pickle","wb") as f:
         pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
     
     data_manipulation.unpack_results_to_df(results, output_df, OD_names)
-    output_df.to_csv("NUTS0.csv", index=False)
+    output_df.to_csv(f"Outputs/NUTS_{NUTS_CODE}.csv", index=False)
 
 
     logging.warning("End of the script...")
