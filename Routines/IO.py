@@ -17,7 +17,7 @@ def load_network():
     """
     logging.info("Loading Europe Network")
 
-    with open(f"{get_home()}/Europe_Graph.gpickle", "rb") as f:
+    with open(f"{get_home()}/Network/Serialized/Europe_Graph.gpickle", "rb") as f:
         G = pickle.load(f)
 
     logging.info("Loaded")
