@@ -8,9 +8,7 @@ import geopandas as gpd
 import osmnx as ox
 import networkx as nx
 
-import IO
-import data_manipulation
-import optimal_route
+from Routines import IO, data_manipulation, optimal_route
 import pickle
 
 import logging

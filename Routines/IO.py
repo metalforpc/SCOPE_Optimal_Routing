@@ -2,6 +2,14 @@ import logging
 import pickle
 import geopandas as gpd
 import itertools
+from pathlib import Path
+
+def get_home():
+    """
+    Function to get the home folder
+    """
+    path = Path(__file__).parent.parent
+    return path
 
 def load_network():
     """
@@ -9,7 +17,7 @@ def load_network():
     """
     logging.info("Loading Europe Network")
 
-    with open("Europe_Graph.gpickle", "rb") as f:
+    with open(f"{get_home()}/Europe_Graph.gpickle", "rb") as f:
         G = pickle.load(f)
 
     logging.info("Loaded")
@@ -22,10 +30,12 @@ def load_nuts(CODE_LEVEL = 0):
     """
 
     assert isinstance(CODE_LEVEL, int)
+    not_cleaned = "Administrative_Boundaries/NUTS_RG_20M_2021_3035.shp"
+    cleaned = "AB_Cleaned/AB_clean.shp"
 
     # Load NUTS shapefile
     logging.info("Loading NUTS Boundaries")
-    df = gpd.read_file("Administrative_Boundaries/NUTS_RG_20M_2021_3035.shp")
+    df = gpd.read_file(f"{get_home()}/{cleaned}")
     logging.info("Loaded")
 
     # Setting the NUTS Level
@@ -47,3 +57,4 @@ def load_nuts(CODE_LEVEL = 0):
     logging.info("Done")
 
     return NUTS, origins_nuts, destinations_nuts, OD_names
+
