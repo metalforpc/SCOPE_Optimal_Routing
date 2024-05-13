@@ -1,6 +1,8 @@
 import sys
+from pathlib import Path
+path = Path(__file__).parent.parent
 
-sys.path.append("../Routines")
+sys.path.append(path)
 
 from Routines import IO
 from Routines import data_manipulation
