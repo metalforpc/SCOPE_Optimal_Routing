@@ -1,5 +1,9 @@
-import IO
-import data_manipulation
+import sys
+
+sys.path.append("../Routines")
+
+from Routines import IO
+from Routines import data_manipulation
 import matplotlib.pyplot as plt
 
 import logging
